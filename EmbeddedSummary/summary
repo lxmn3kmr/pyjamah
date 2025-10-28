@@ -7,4 +7,44 @@ Embedded Systems - Programming the CPU
  CPU is connected to Actuators (like motors etc.) via GPIO. 
 
 
+Embedded Systems -> Firmware Engineering and Systems Software Engg.
+
+FW -> Programming the CPU - > Software State machine.  
+  Eg: electronics - TV ,  audio system, microwave, charger, etc. 
+Systems Software -> Higher level OS. Interacts with User SW. 
+      Eg: IOS - Controlling underlying electronics, Kernel
+      involves thread management, HW, security, encryption mgmgt. 
+   Eg: Phone has multiple CPUs. i.e multiple Subsystems and each subsystem will have a CPU. 
+        Screen will have its CPU, Audio system will have CPU, 
+        Main CPU will interact with other small CPUs. Higher Level OS (HLOS) sits on the Main CPU which is interacting with peripherals
+ some FW activities -> Activating read/write paths to memory. configurations etc.  
+
+
+Microcontroller Class of CPU - it is FW. Eg: Arm Cortex M. 32 bit CPU. M is micro controller class. RISC- V embedded class 32 bit. AVR, PIC
+32 bit CPU - how many bits CPU can manipulate (store/add) is 32 bit.
+
+A-class CPU - Application grade CPU. usually 64bit CPU. 
+
+
+Memory Mapped IO
+ 32 bit CPU - can generate 2^32 4GB address locations. 
+ Let's say 128KB memory. 
+ I/O - registers. 
+
+Register - Bits.
+  Using Transistor create a NOT gate. Using NOT gate, feedback of NOT gate - which is memory bit. 
+  Create Flipflops.  Arrange 8 D flipflops in side side load/read them in parallel to create 8 bit register.
+  Each register will have address.
+
+Output -> Control an LED: Address range where the Registers are available. Reading/writing to registers are tied as HW signals to another complicated digital logic.
+ It triggers state machine at digital HW level and it reads it as input and has a line going to trigger LED. 
+Input -> Reading sensor - Sensing hw is writing into registers. registers are accessible through address to CPU and CPU reads registers to know sensor data. 
+
+Read/Writing on registers has an effect on real world.
+
+CPU, Memory, Input, Output Registers, 
+C, Assembly, CPU, RTOS(state machines) ,
+RTOS is not HLOS, not kernel/linux kernel/user kernel, it is a plain scheduler with abilities to manage threads, queues, mutex
+OS primitives (scheduler, threads, queues, mutex). Free RTOS.
+each state machine - buttons, screen, timer etc are spawn as a thread.
   
