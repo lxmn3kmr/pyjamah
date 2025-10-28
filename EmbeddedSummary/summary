@@ -1,3 +1,10 @@
 Embedded Systems - Programming the CPU
   Sensors - CPU - Actuators.
+
+  Sensors/inputs change states. CPU acts on these changes. 
+  CPU can be programmed while electronics HW is a fixed and can't be changed.
+
+ CPU is connected to Actuators (like motors etc.) via GPIO. 
+
+
   
