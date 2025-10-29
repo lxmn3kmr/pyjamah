@@ -23,7 +23,7 @@ Systems Software -> Higher level OS. Interacts with User SW.
 Microcontroller Class of CPU - it is FW. Eg: Arm Cortex M. 32 bit CPU. M is micro controller class. RISC- V embedded class 32 bit. AVR, PIC
 32 bit CPU - how many bits CPU can manipulate (store/add) is 32 bit.
 
-A-class CPU - Application grade CPU. usually 64bit CPU. 
+A-class CPU - Application grade CPU. usually 64bit CPU. Sys Engineer
 
 
 Memory Mapped IO
@@ -50,6 +50,42 @@ each state machine - buttons, screen, timer etc are spawn as a thread.
 
 
 https://github.com/pyjamabrah/arm-m-assembly
+
+Role of FW engg - device drivers (mechanics - how to do things - how to send data to printer - what registers to configure etc.) and 
+  application dev (policies, statemachine- given a big file, how to send data - multiple pages together, First page first etc.)
+
+Systems Engg - Devices which we can run apps - laptop, phone, smart watches, cloud servers, car infotainment,
+state machine is too complicated and unknown to sys engineer.
+works with HLOS. Windows,linux, macOS, watchOS. 
+HLOS - involves Virtual Memory via MMU. layers of isolation
+Application Class CPU.  x86, AMD, ARM-A. Used to create layers of isolation.
+
+
+A-CPU -> 4 levels of Execution levels. EL layers. SPlit into secure and non secure. Virtual memory. 
+OS runs in EL1 layer. Applications run on EL0. 
+Generic OS. App running on OS is not aware of underlying HW. Sys engineers don't care about memory map. 
+Eg: notepad, chrome running. They don't care about memory available. OS needs to take care of it. 
+However, in FW, engineer needs to take care of it and one application crashes entire sys to go down. 
+EL0 level - does not have access to Sys resources (eg: ports, ). Code running on EL0 has no access. It requests OS to do.
+EL1 level - OS runs. OS access HW resources. Juggles between multiple application processes. Scheduler runs. eg. timer expires, kernel kicks in and changes process running. 
+EL2 level - Hypeviser. multiple OS can run. VMWare. 
+
+
+Eg: netflix runs in secure mode. video buffer data is in secure mode. non secure mode applications like screenshot does not have access and hence we get a blank screen
+
+Virtual Memory - 
+each process has its memory address. MMU translates address to physical address. Each process may think it is accessing same address. 
+memory corruption is contained. 
+
+Role of Sys Engg - 
+Device drivers - deals with linux kernel facilities. provides OS primitives. Use these facilities and manipulates HW.
+application dev - middleware - audio subsystem - driver to HW driver. interacts with user info (media player) and routes to output (headphones/speaker?)
+Architect - Designers.
+
+SOC- several A class CPU together on island. Bus system. CPU interconnects with Bus System. Other modules - GPU, memory controller, BT, modem. 
+BT, modem chips have M class CPU. HLOS is running on CPU-A cluster island.
+
+
 
 
   
