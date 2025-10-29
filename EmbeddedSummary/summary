@@ -47,4 +47,9 @@ C, Assembly, CPU, RTOS(state machines) ,
 RTOS is not HLOS, not kernel/linux kernel/user kernel, it is a plain scheduler with abilities to manage threads, queues, mutex
 OS primitives (scheduler, threads, queues, mutex). Free RTOS.
 each state machine - buttons, screen, timer etc are spawn as a thread.
+
+
+https://github.com/pyjamabrah/arm-m-assembly
+
+
   
