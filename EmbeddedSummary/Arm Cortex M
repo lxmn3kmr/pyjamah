@@ -1,0 +1,27 @@
+https://github.com/pyjamabrah/arm-m-assembly
+
+Memory map in the manual. 
+
+Flash memory - usually code memory. immune to power cycle.
+SRAM - temp calculations are made in RAM. volatile memory
+
+UART/USART
+USART registers - SR StatusRegister, DR DataRegister
+Programmers Model - 
+  Instruction Set, Registers, CPU functionality, FPU, 
+ 
+
+HCI - Host Control Interface layer. 
+
+Eg: a CPU gives commands to BT chip to scan. BT chip does some processing. Requires multiple tasks scheduling. Which can be done on RTOS. 
+It needs a scheduler. Each task is a statemachine. 
+
+RTOS - https://github.com/FreeRTOS/FreeRTOS-Kernel
+
+RTOS is written in C. Application implemention in RTOS is state machine implementation. Each task is a statemachine.
+
+www.FreeRTOS.org Documentation  RTOS fundamentals. Ref Manual and hands on tutorial guide.
+
+
+
+
