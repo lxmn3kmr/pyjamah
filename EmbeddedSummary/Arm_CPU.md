@@ -46,15 +46,58 @@ CPU -
 
   CPU can have FPU Floating point unit for computations - Status, Data registers. FPRSCR (FP status and control Register), D0-D15
 
-**Modes and Priviliges**
- CPU can operate in two modes - 
- Handler mode - interrupt handling
- Thread mode - computation related, actual application code. 
+  **Modes and Priviliges**
+   CPU can operate in two modes - 
+   Handler mode - interrupt handling . Always privileged. 
+   Thread mode - computation related, actual application code. Can be privileged and non priv. Application related runs on                     unpriviliged thread mode. safeguard control/status registers
  
- Priviliges - 
- Privilege -  code can access control and status registers
- non privilege - code cannot access control and status registers
+   Priviliges - 
+    Privilege -  code can access control and status registers
+     non privilege - code cannot access control and status registers
+
+ 
+  CPU starts in Privileged thread mode. Switches to unpriv thread mode and then excpetion handler to priv or unpriv thread mode. 
+
+  When CPU starts stack ptr used is MSP. We can change to PSP in Priv mode. 
+  UnPriv mode PSP is used. 
+  Handler mode always use MSP.
+  Why 2 SP?
+   eg: In unpriv mode, application is pushing data to stack. Stack grows downwards. If stack is full, CPU moves to handler mode. Now in handler mode, CPU needs stack to run its operations henc MSP has room to run those exceptions. 
+
+
+**Vector Table**
+  In class M CPU, when interrupt happens, CPU need to know where to go to/how to handle. Instructions on handling are in vector table. 
+  Interrupts are called vectors. 
+  Table - usually starts at address 0. at every 4 bytes, we have a number which tells where CPU should jump. So many numbers-? because of multiple interrupts supported. 
+  0th memory location of table - contains MSP initial value. it is where stack starts.
+  1st location - 0x4 Reset vector - location where CPU should start fetching instructions on a reset. (Boot part)
+  2nd loc - 0x8 - NMI vector - location where instructions of handling NMI are present
+  3rd - 0xC - Hard fault vector
+  4th - 0x10 - Mem Manage vector
+  5 - Bus fault vector - Bus responds error. CPU goes to address in this memory and fetches instructions. 
+  ..
+  Sys tick vector 
+  interrup0
+  inter1
+  ...
+  interupt 240 vector. Different peripherals (UART, DMA) are mapped to diff interrupt numbers. 
+
+  **When CPU boots up -** 
+   0th entry in vector table - which has MSP is put into R13 register.
+   loads 1st entry - 0x4 - into Program Counter and starts executing instructions. 
+
+**QEMU - emulator**
+  Emulator is a SW that acts as a CPU. Has Binary for cortexM.  attach a debugger to QEMU to debug CPU. 
+  QEMU has debug interface and exposes ports to external hw .
+
+  Make file - instructions, elf file
+  
+  
+  
   
 
+  
+
+  
   
   
