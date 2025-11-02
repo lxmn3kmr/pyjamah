@@ -1,11 +1,14 @@
 A-Class - Application Grade processors - capable to run Windows, Linux
-R-Class - Real Time System CPUs - Engine control/
-M-Class - Micro Controller based CPUs for embedded applications - windows in car, remote controls, wifi.
+R-Class - Real Time System CPUs - Engine control. Deterministic. 
+M-Class - Micro Controller based CPUs for embedded applications - windows in car, remote controls, wifi.    
 
 MicroArchitecture vs Architecture
 
 Architecture is simply a specification of what CPU should do.
 Micro-Arch is implementation of architecture. 
+architectures - v6 (M0, M1), v7(M3, M4, M7)  v8(M23, M33, M55)  M0/M1 etc. are called micro architectues. 
+These differ mainly based on instruction support. 
+Look Arm Cortex M for beginners book.
 
 CPU is just input, output, memory (instruction, data), interrputs.
 
@@ -35,8 +38,8 @@ CPU -
   Arm Cortex M Programmers Guide
   General Registers - R0-R15; Special Registers - Interrupt, control, Program Status
   two R13 registers - MSP (Main Stack Ptr) and PSP (Process Stack Ptr). Why 2 SP?
-  R14 - Link register - points to the address of next instruction where control returns back to after function call. 
-  R15 - Program Counter -   points to the address where instruction needs to be fetched
+    R14 - Link register - points to the address of next instruction where control returns back to after function call. 
+    R15 - Program Counter -   points to the address where instruction needs to be fetched
 
   xPSR - Program Status Register - combination of 3 registers. Execution PSR, Application PSR, InterruptPSR. 
       Union of these 3 is xPSR (32 bit). 
@@ -54,7 +57,8 @@ CPU -
   **Modes and Priviliges**
    CPU can operate in two modes - 
    Handler mode - interrupt handling . Always privileged. 
-   Thread mode - computation related, actual application code. Can be privileged and non priv. Application related runs on                     unpriviliged thread mode. safeguard control/status registers
+   Thread mode - computation related, actual application code. Can be privileged and non priv. Application related runs on                     unpriviliged thread mode. safeguard control/status registers. 
+                OS runs on privileged thread mode. RTOS. 
  
    Priviliges - 
     Privilege -  code can access control and status registers
@@ -66,8 +70,8 @@ CPU -
   When CPU starts stack ptr used is MSP. We can change to PSP in Priv mode. 
   UnPriv mode PSP is used. 
   Handler mode always use MSP.
-  Why 2 SP?
-   eg: In unpriv mode, application is pushing data to stack. Stack grows downwards. If stack is full, CPU moves to handler mode. Now in handler mode, CPU needs stack to run its operations henc MSP has room to run those exceptions. 
+  Why 2 SP? 
+   eg: In unpriv mode, application is pushing data to stack. Stack grows downwards. If stack is full, CPU moves to handler mode. Now in handler mode, CPU needs stack to run its operations henc MSP has room to run those exceptions. Hence, CPU-M has 2 stacks.
 
 
 **Vector Table**
@@ -87,6 +91,11 @@ CPU -
   ...
   interupt 240 vector. Different peripherals (UART, DMA) are mapped to diff interrupt numbers. 
 
+  **NVIC - Nested Vector Interrupt Controller**. NVIC also has configuration registers.
+      CPU will have only one line dedicated to interrupt. CPU is connected to NVIC which has more pins dedicated for interrupts. NVIC will trigger indication to CPU. Interrupt details passed on a bus to CPU.
+     configuration registers - to config. ex: config only few interrupts, only report when line 9 is ON, etc. 
+    
+  
   **When CPU boots up -** 
    0th entry in vector table - which has MSP is put into R13 register.
    loads 1st entry - 0x4 - into Program Counter and starts executing instructions. 
@@ -98,8 +107,14 @@ CPU -
   Make file - instructions, elf file
   
   
-  
-  
+**M class**
+   architectures - v6 (M0, M1), v7(M3, M4, M7)  v8(M23, M33, M55)  M0/M1 etc. are called micro architectues.
+
+**Context Switch Save**
+context will be saved on Stack. Saves R0-R4(may be few more) and then R14(LR), R11, R12 , R10. (Idea is saves 8 registers 4 from top and 4 from bottom). Goes to SP address at R13, saves these registers. saves PC as well. 
+
+Return context - brings back saved info on stack.
+
 
   
 
