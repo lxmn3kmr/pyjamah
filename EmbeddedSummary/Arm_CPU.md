@@ -22,9 +22,11 @@ CPU -
   
 
   CPU will have buses. Ex: 2 pairs of buses. 
+     Bus is just a set of wires.
      Instruction Bus - contains adress link where to fetch instructions from and Bus to fetch, 
      Address Bus - contains adress link where to fetch data from and Bus to fetch. 
   CPU have Interrupts - External to CPU. Exception is internal eg: when address is invalid.
+  
 
 **Programmers Model:**
   Arm Cortex M Programmers Guide
