@@ -7,6 +7,8 @@ MicroArchitecture vs Architecture
 Architecture is simply a specification of what CPU should do.
 Micro-Arch is implementation of architecture. 
 
+CPU is just input, output, memory (instruction, data), interrputs.
+
 **CPU memory interactions**
 Memory - instructions mem, data memory. 
 ARM CPUs are based on RISC architecture - Load/Store architecture. Any computation on data -> fetch data, compute, store data. 
@@ -24,7 +26,8 @@ CPU -
   CPU will have buses. Ex: 2 pairs of buses. 
      Bus is just a set of wires.
      Instruction Bus - contains adress link where to fetch instructions from and Bus to fetch, 
-     Address Bus - contains adress link where to fetch data from and Bus to fetch. 
+     Address Bus - contains adress link where to fetch data from and Bus to fetch.  
+     Data Bus - Rd/Wr Bus. 
   CPU have Interrupts - External to CPU. Exception is internal eg: when address is invalid.
   
 
