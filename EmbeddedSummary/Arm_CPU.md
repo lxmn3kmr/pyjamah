@@ -91,10 +91,16 @@ CPU -
   ...
   interupt 240 vector. Different peripherals (UART, DMA) are mapped to diff interrupt numbers. 
 
+ **Trap vs Vector table**
+   Trap mechanism - any interrupt/exception - goes to a common code location and identifies which interrupt it is. 
+   Vector table - a memory location for each interrupt.
+ 
+
   **NVIC - Nested Vector Interrupt Controller**. NVIC also has configuration registers.
       CPU will have only one line dedicated to interrupt. CPU is connected to NVIC which has more pins dedicated for interrupts. NVIC will trigger indication to CPU. Interrupt details passed on a bus to CPU.
      configuration registers - to config. ex: config only few interrupts, only report when line 9 is ON, etc. 
-    
+
+  
   
   **When CPU boots up -** 
    0th entry in vector table - which has MSP is put into R13 register.
@@ -111,12 +117,13 @@ CPU -
    architectures - v6 (M0, M1), v7(M3, M4, M7)  v8(M23, M33, M55)  M0/M1 etc. are called micro architectues.
 
 **Context Switch Save**
-context will be saved on Stack. Saves R0-R4(may be few more) and then R14(LR), R11, R12 , R10. (Idea is saves 8 registers 4 from top and 4 from bottom). Goes to SP address at R13, saves these registers. saves PC as well. 
+context will be saved on Stack. Saves R0-R3 and then xPSR, R15 (PC) R14(LR), R12. (Idea is saves 8 registers 4 from top and 4 from bottom). Goes to SP address at R13, saves these registers. 
+If new program tries to modify unsave registers, those registers have to be saved before using.
 
 Return context - brings back saved info on stack.
 
 
-  
+   
 
   
   
