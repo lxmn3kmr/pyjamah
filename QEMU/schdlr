@@ -1,0 +1,40 @@
+single CPU - multiple programs.
+eg: round robin
+
+Task1()
+T2()
+T3()
+
+Switch from T1 to T2 -> Save PC and CPU registers. 
+Each Task can have its own stack for cleaner designer. It means dedicated mem location in stack memory. 
+At T1->T2 switch CPU registers can be saved on its stack. Context - registers, xpsr, pc, sp. 
+
+how/when does switch T1 to T2 happen? Interrupt handler. 
+   Save context so S1. 
+   In interrupt handler - do xxx, pick context from S2 at interrupt handler exit. i.e SP needs to be updated.
+    so Int handler needs to have data to S1, S2, S3. (stack ptrs for T1/2/3)
+   
+Timer interrupt - SysTick - CPU has it as a peripheral. 24 bit timer. once the value becomes zero, it gives interrupt to CPU.
+  when interrupt fires, save current context and run Systick handler, updates new context (S2)
+
+ISR is the scheduler. 
+
+Exception Entry/Return
+   Entry:
+    CPU automatatically saves XPSR, PC, LR, R12, R0-R3 at SP+1C, SP+18, SP+14.. SP+4 (R1) SP (R0). 
+    New SP points at R0. old SP was at SP+1C+4. 
+    R11-R4 will be manually (push operations) saved once we land on ISR. 
+    Change SP to S2. 
+  Exit: 
+    Restore S2 context registers to CPU. 
+
+SysTick timer 
+  SysTick Control and Status Register
+  Systick Reload Value Register
+  Systick Current Val Reg
+
+SysTick is 15th interrupt in CPU. systick handler address is at 15th location in vector table. 
+
+  
+
+
