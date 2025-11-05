@@ -44,6 +44,33 @@ Instructions
   stack manipulation - push/pop. 
   
 
+Systick timer:
+Memory mappe I/O. modify registers to control Systick. registers have dedicated memory address.
+Systick ->NVIC -> CPU -> systick_handler
+
+.equ systick_csr 0XE000E010 //address of CSR reg
+.equ timeout 0xFFFF 
+
+reset_handler:
+ ldr r0,=systick_csr
+ ldr r1,=systick_rvr
+    r2 = cvr
+ ldr r3,=timeout
+
+ str r3, [r1] //storing timeout value to RVR register
+
+ mov r3, #0x0
+ str r3, [r2] 
+
+ mov r3, #0x7
+ str r3, [r0]
+  b. //stuck here waiting for ISR
+  
+systick_handler:
+   add r5, r5, #1 //just increment r5 to track timer expiry
+break here:
+   bx lr //exit from ISR
 
 
+   
 
