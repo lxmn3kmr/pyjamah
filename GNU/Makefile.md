@@ -16,6 +16,14 @@ xyz:
 abc: 
   echo "this is abc target"
  command: make abc
-looks for Makefile and looks for targets and executes recipes on it.  If target is not mentioned, it picks the first target. 
- 
+    looks for Makefile and looks for targets and executes recipes on it.  If target is not mentioned, it picks the first target. 
+
+
+xyz: a.txt -> Dependency on a target xyz. runs xyz target commands only when a.txt is changed.
+
+eg: main.o:main.c
+    gcc main.c -o main.o 
+    make main.o //should generate main.o only when main.c is modified. If not it will skip running recipes. looks for timestamp file modified. If target is newer than all dependencies.
+    
+
  
