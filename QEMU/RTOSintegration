@@ -1,0 +1,21 @@
+add RTOS files individually and get it compiled
+Config parameters and Port functions needs to be implemented by user
+
+CPU Clock - 8MHz
+Timer clock - 10 --> 10 times in 1 sec
+
+  
+vTaskScheduler() in start.c will start task scheduler.
+
+xTaskCreate(vtask1, "T1", stacksize, NULL, 1, NULL) - create tasks before scheduler. 
+
+task creation failed due to mem allocation failure. New TCB is NULL.  Task Control Block. - fn ptr, stack, metadata.
+taskcreate -> createtask-> PortMalloc ->  heap initialization failed. we were writing into Read only memory and hence heap creation variables are 0.
+
+data and bss section handling in linker script. 
+
+The .bss section (Block Started by Symbol) is a segment within an executable or object file that holds uninitialized global and static variables. 
+When a program is loaded into memory, the operating system or loader allocates memory for the .bss section and initializes its contents to zero before the program's execution begins
+
+
+
