@@ -12,5 +12,10 @@ xyz:
   echo "hello world" > a.txt
   ls
   cat a.txt
+
+abc: 
+  echo "this is abc target"
+ command: make abc
+looks for Makefile and looks for targets and executes recipes on it.  If target is not mentioned, it picks the first target. 
  
  
