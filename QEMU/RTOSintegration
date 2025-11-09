@@ -17,5 +17,74 @@ data and bss section handling in linker script.
 The .bss section (Block Started by Symbol) is a segment within an executable or object file that holds uninitialized global and static variables. 
 When a program is loaded into memory, the operating system or loader allocates memory for the .bss section and initializes its contents to zero before the program's execution begins
 
+Linker Script should take care of data/bss handling. .text section, .data section, .bss section
+map.ld:
+.text: {
+   _stext = .;  -> this dot means current location. variable stext start of text is starting from current location.
+   *(.vectors*)  -> Vector table
+   *(.text*)   -> code
+   *(.rodata*)  ->RO data from every .o file. 
+   *(.rodata*)
+   _etext = .;
+} > FLASH  //all this is part of FLASH
+
+.data: ALIGN(4){
+   _sdata = .;  -> this dot means current location. variable sdata start of data is starting from current location.
+   _sidata = LOADADDR(.data);
+   *(.data*)  ->RO data from every .o file. 
+   .= ALIGN(4)
+   _edata = .;
+} > FLASH  AT > RAM //> RAM indicates allocate in RAM as well and ROM.
+->
+initialized global variables are stored in ROM and when code tries to modify them, those needs to be allocated memory in RAM to be modified else modification fails.
+
+.bss: ALIGN(4){
+   _sbss = .;  
+   *(.bss*)  
+   .= ALIGN(4)
+   _bss = .;
+} > RAM //store in RAM. .bss is uninit global variables. all 0's so don't need to store on ROM. 
+Linker to create link address of variables from RAM. 
+
+start.c
+
+extern uint32_t _sdata; //start of data RAM
+extern uint32_t _sidata; //start of data in FLASH
+extern uint32_t _edata;
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+
+start(){
+//initialize .data section i.e copy from FLASH to RAM
+uint32 *src = &_sidata; //flash
+uint32 *dst = &_sdata;  //RAM
+while(dst<_edata)
+  *dst++ = *src++;
+
+dst = &_sbss;
+while(dst <_ebss)
+  *dst++ = 0;
+
+xtaskCreate(,T1, )
+xtaskCreate( T2 )
+VTaskStartScheduler();
+
+}
+
+QEMU opens a port to GBD to connect.
+program hardfault errors, systick handler:
+
+Kernel is scheduler - scheduler needs timer -> expires - scheduler switches between tasks. as systick expires
+
+
+taskscheduler->CreateIdletasks()->interrupts configured SV -> start first task -> 
+
+thread mode -> SVC 0 (SVC instruction with 0) triggers exception SV Supervisory Call. Control transfers to Handler
+SVC 0 -> This is to start first task. This was failing. 
+if priority of SVC is same as current execution, it results in hardfault. SVC needs higher priority 
+
+xPortStartScheduler(); use this directly as we were entering into hardfault from VtaskStartScheduler which was calling PortStartScheduler. This func will have vTaskSwitchContext
+
+update vector table addrss with xPortSystickHandler , xPortPendSvHandler etc. these are inbuilt in port.c
 
 
