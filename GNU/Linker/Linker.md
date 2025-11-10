@@ -73,8 +73,63 @@ Keep a copy of .data and .bss in ROM. Transfer this content to RAM every power c
 
 .data : {
   *(.data)
-} > RAM AT > ROM      --> 
+} > RAM AT > ROM      --> RAM and ROM. 
 
+map file will now have both VMA and LMA captured. 
+
+**Copy from LMA to VMA**
+src, dst, size. 
+Current Location counter - pointing to VMA
+
+.rodata : {
+ *(.rodata)
+ _src_start_data = .;
+} > ROM AT > ROM --> This will be loaded last in ROM after which data section is loaded. hence get end address of this section
+
+.data : {
+  _dst_start_data = .;  -> start of VMA in RAM. 
+  *(.data)
+  _dst_end_data = .;  -> end of VMA in RAM 
+} > RAM AT > ROM      --> RAM and ROM.   -> size = end - start;
+
+.bss : {
+  _dst_start_bss = .;  -> start of VMA in RAM. 
+ *(.bss)
+  _dst_end_bss = .;
+}
+
+**add copy function in main.c **
+
+extern char _dst_start_data;
+extern char _dst_end_data;
+extern char _src_start_data;
+
+void copy(){
+char *src = &_src_start_data; --> variables from linker scripts are address. 
+char *dst = &_dst_start_data; 
+char *dst_end =&_dst_end_data;
+
+while(dst!=dst_end)
+*dst++ = *src++;
+
+while(_dst_start_bss != _dst_end_bss){
+  *dst++ = 0; 
+  src++; 
+  }
+
+}
+
+we find constructors like this in static code of diff programs.
+even in linux kernel - loader also does this kind of copy and only after above copy main.c is called. 
+
+we need this code to be executed first. so should be placed on top of .text section. and then initialize bss memory in RAM to 0. similar code like above. 
+so **create a special section** . GCC attribute section. mark a function in custom section. can mark variable also in custom section. 
+void __attribute__((section (*new_section_name))) copy()
+
+.text : {
+  *(new_section_name) //placing before other code
+  *(.text)
+}
 
 
 
