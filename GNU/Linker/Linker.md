@@ -41,6 +41,7 @@ code is in .txt
   static uninit local
 
   local variable is allocated at runtime on the stack when the function is invoked. 
+  const variable?  .rodata
 
 .ELF is final binary that can be loaded to MCU. microcontrollerunit. .ELF has some additional headers/debug
 .bin has removed additional headers/debug info from .efl
@@ -56,12 +57,24 @@ sections:
 .txt information
 .data
 .bss  (can have all these in same section)
-
+.rodata (read only data/variables)
 
 .ld file
 /DISCARD/:{          --> This will discard a section/file. can selectively select a few sections by incoporating those in .txt/.data/.bss section
   global.o (*)
 }
+
+
+Need to include .rodata in ld file to include const variables. 
+
+
+initialized global saved in RAM when program is loaded. but if we remove power, content of RAM is gone. **how to retain content of data section**?
+Keep a copy of .data and .bss in ROM. Transfer this content to RAM every power cycle/reboot in predefined/reserved memory space. and code uses address of RAM to modify the variable. Virtual Memory Address(RAM) and Load Memory Address (ROM)
+
+.data : {
+  *(.data)
+} > RAM AT > ROM      --> 
+
 
 
 
