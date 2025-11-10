@@ -58,5 +58,10 @@ sections:
 .bss  (can have all these in same section)
 
 
+.ld file
+/DISCARD/:{          --> This will discard a section/file. can selectively select a few sections by incoporating those in .txt/.data/.bss section
+  global.o (*)
+}
+
 
 
